@@ -163,10 +163,11 @@ var Isopack = function () {
   // XXX BBP redoc
   self.sourceHandlers = null;
 
-  // XXX linter, minifier, etc
   // XXX BBP doc (map id -> CompilerPlugin)
   self.sourceProcessors = {
-    compiler: null
+    compiler: null,
+    linter: null,
+    minifier: null
   };
 
   // See description in PackageSource. If this is set, then we include a copy of
@@ -675,11 +676,9 @@ _.extend(Isopack.prototype, {
       // XXX BBP doc
       registerLinter: function (options, factory) {
         isopack.sourceProcessors.linter = isopack.sourceProcessors.linter || {};
-        // XXX BBP I just broke linters when I got rid of BuildPluginDefinition
         Plugin._registerSourceProcessor(options, factory, {
           type: "linter",
           methodName: "registerLinter",
-          buildPluginClass: linterPluginModule.LinterPlugin,
           // Several linters can handle the same extension
           skipUniqExtCheck: true
         });

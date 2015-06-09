@@ -2,12 +2,6 @@ var buildPluginModule = require('./build-plugin.js');
 var util = require('util');
 var _ = require('underscore');
 
-exports.LinterPlugin = function (pluginDefinition, userPlugin) {
-  var self = this;
-  self.userPlugin = userPlugin;
-  self.pluginDefinition = pluginDefinition;
-};
-
 var LintingFile = exports.LintingFile = function (source) {
   buildPluginModule.InputFile.call(this);
 
