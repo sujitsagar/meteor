@@ -675,12 +675,24 @@ _.extend(Isopack.prototype, {
 
       // XXX BBP doc
       registerLinter: function (options, factory) {
-        isopack.sourceProcessors.linter = isopack.sourceProcessors.linter || {};
         Plugin._registerSourceProcessor(options, factory, {
           type: "linter",
           methodName: "registerLinter",
           // Several linters can handle the same extension
           skipUniqExtCheck: true
+        });
+      },
+
+      // The minifier plugins can fill into 2 types of minifiers: CSS or JS.
+      // When the minifier is added to an app, it is used during "bundling" to
+      // compress the app code and each package's code separately.
+      // If a package is depending on a package that provides a minifier plugin,
+      // the minifier plugin is not used anywhere.
+      registerMinifier: function (options, factory) {
+        Plugin._registerSourceProcessor(options, factory, {
+          type: "minifier",
+          methodName: "registerMinifier",
+          skipUniqExtCheck: false
         });
       }
     };
