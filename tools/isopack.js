@@ -620,6 +620,7 @@ _.extend(Isopack.prototype, {
           });
         }
 
+        isopack.sourceProcessors[type] = isopack.sourceProcessors[type] || {};
         // Unique ID within a given bundler call.  Used internally in
         // compiler-plugin.js and others, and human-readable for debugging
         // purposes.
@@ -673,6 +674,7 @@ _.extend(Isopack.prototype, {
         );
       },
 
+      // XXX BBP make this method _doNotCallThisDirectly_
       // XXX BBP doc
       registerLinter: function (options, factory) {
         Plugin._registerSourceProcessor(options, factory, {
@@ -683,12 +685,14 @@ _.extend(Isopack.prototype, {
         });
       },
 
+      // XXX BBP make this method _doNotCallThisDirectly_
       // The minifier plugins can fill into 2 types of minifiers: CSS or JS.
       // When the minifier is added to an app, it is used during "bundling" to
       // compress the app code and each package's code separately.
       // If a package is depending on a package that provides a minifier plugin,
       // the minifier plugin is not used anywhere.
       registerMinifier: function (options, factory) {
+        // XXX check options.extensions for uniquely having only js and css
         Plugin._registerSourceProcessor(options, factory, {
           type: "minifier",
           methodName: "registerMinifier",

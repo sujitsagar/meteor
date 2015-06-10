@@ -2,11 +2,11 @@ var util = Npm.require('util');
 var Future = Npm.require('fibers/future');
 var path = Npm.require('path');
 
-Plugin.registerLinter({
+Plugin.registerMinifier({
   extensions: ["js"],
 }, function () {
   var minifier = new UglifyJSMinifier();
-  return linter;
+  return minifier;
 });
 
 function UglifyJSMinifier () {};
@@ -22,6 +22,7 @@ UglifyJSMinifier.prototype.processFilesForTarget = function (files) {
   };
 
   files.forEach(function (file) {
+    console.log(UglifyJSMinify(file.getContentsAsString(), minifyOptions));
   });
 };
 

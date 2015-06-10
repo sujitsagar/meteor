@@ -820,6 +820,12 @@ _.extend(Target.prototype, {
     var self = this;
 
     var allJs;
+
+    var minifyOptions = {
+      fromString: true,
+      compress: {drop_debugger: false }
+    };
+
     if (self._minifyTogether) {
       var sources = _.map(self.js, function (file) {
         return file.contents('utf8');
