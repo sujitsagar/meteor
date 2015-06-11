@@ -7,6 +7,7 @@ module.exports = {
     'es6.arrowFunctions',
     'es6.blockScoping',
     'es6.classes',
+    'es6.constants',
     'es6.destructuring',
     'es6.parameters.rest',
     'es6.properties.computed',
