@@ -4,6 +4,8 @@ module.exports = {
   sourceMaps: "inline",
   compact: false,
   whitelist: [
+    'es3.memberExpressionLiterals',
+    'es3.propertyLiterals',
     'es6.arrowFunctions',
     'es6.blockScoping',
     'es6.classes',
