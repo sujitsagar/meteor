@@ -511,12 +511,26 @@ _.extend(Target.prototype, {
 
       // Minify, if requested
       if (options.minify) {
-        var minifiers = isopackets.load('minifiers').minifiers;
-        self.minifyJs(minifiers);
+        var minifiersByExt = {};
+        var minifiers = _.flatten(_.pluck(
+          _.pluck(options.packages || [], 'sourceProcessors'),
+          'minifier'));
+
+        ['js', 'css'].forEach(function (ext) {
+          minifiersByExt[ext] = _.find(minifiers, function (minifier) {
+            return _.contains(minfier.extensions, ext);
+          });
+        });
+
+        if (minifiersByExt.js) {
+          self.minifyJs(minifiersByExt.js);
+        }
 
         // CSS is minified only for client targets.
         if (self instanceof ClientTarget) {
-          self.minifyCss(minifiers);
+          if (minifiersByExt.css) {
+            self.minifyCss(minifiersByExt.css);
+          }
         }
       }
 
@@ -816,33 +830,10 @@ _.extend(Target.prototype, {
   },
 
   // Minify the JS in this target
-  minifyJs: Profile("Target#minifyJs", function (minifiers) {
+  minifyJs: Profile("Target#minifyJs", function (minifier) {
     var self = this;
 
-    var allJs;
-
-    var minifyOptions = {
-      fromString: true,
-      compress: {drop_debugger: false }
-    };
-
-    if (self._minifyTogether) {
-      var sources = _.map(self.js, function (file) {
-        return file.contents('utf8');
-      });
-
-      buildmessage.enterJob({title: "minifying"}, function () {
-        allJs = _minify(minifiers.UglifyJS, '', sources, minifyOptions).code;
-      });
-    } else {
-      minifyOptions.compress.unused = false;
-      minifyOptions.compress.dead_code = false;
-
-      allJs = buildmessage.forkJoin({title: "minifying" }, self.js, function (file) {
-        var source = file.contents('utf8');
-        return _minify(minifiers.UglifyJS, file.info, source, minifyOptions).code;
-      }).join("\n\n");
-    }
+    // XXX
 
     self.js = [new File({ info: 'minified js', data: new Buffer(allJs, 'utf8') })];
     self.js[0].setUrlToHash(".js");
