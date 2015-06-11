@@ -13,6 +13,7 @@ module.exports = {
     'es6.properties.shorthand',
     'es6.spread',
     'es6.templateLiterals',
+    'es6.modules', // Not in React Native, but required by the AirBnB style
     'es7.trailingFunctionCommas',
     'es7.objectRestSpread',
     'flow',
