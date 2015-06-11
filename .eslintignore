@@ -6,5 +6,5 @@ packages/
 scripts/
 
 tools/
-!tools/*.js
+!tools/a*.js
 tools/warehouse.js
